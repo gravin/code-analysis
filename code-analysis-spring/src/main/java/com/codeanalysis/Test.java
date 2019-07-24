@@ -16,13 +16,13 @@ public class Test {
         Object bean = ApiControllerBeanManager.getApiController("test","haha.haha","1.0");
         ((TestController) bean).test();
 
-        synchronized (Test.class) {
-            try {
-                Test.class.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+//        synchronized (Test.class) {
+//            try {
+//                Test.class.wait();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
     }
 }
