@@ -1,5 +1,9 @@
 package com.codeanalysis;
 
-@ApiController(name = "account.register", type = "TEST", version = "1.0")
+@ApiController(name = "haha.haha", type = "test", version = "1.0")
 public class TestController {
+
+    public void test(){
+        System.out.println("testtttttttttting");
+    }
 }

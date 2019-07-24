@@ -12,5 +12,5 @@
 		base-package="com.codeanalysis"
 		name-generator="com.codeanalysis.ApiControllerBeanManager"
 	 />
-
+	<bean id="springApplication" class="com.codeanalysis.ApiControllerBeanManager" />
 </beans>
