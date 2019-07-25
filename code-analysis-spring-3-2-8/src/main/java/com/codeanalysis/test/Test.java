@@ -1,5 +1,7 @@
-package com.codeanalysis;
+package com.codeanalysis.test;
 
+import com.codeanalysis.ApiControllerBeanManager;
+import com.codeanalysis.TestController;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Test {
