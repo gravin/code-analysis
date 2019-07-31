@@ -20,7 +20,7 @@ public class UserBeanDefinitionParser extends AbstractSingleBeanDefinitionParser
             builder.addPropertyValue("userName",userName);
         }
         if(StringUtils.hasText(email)){
-            builder.addPropertyValue("userName",email);
+            builder.addPropertyValue("email",email);
         }
     }
 }
