@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--to debug XmlValidationModeDetector detectValidationMode
+second line
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:myname="http://www.datamigration.club/schema/user"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.datamigration.club/schema/user http://www.datamigration.club/schema/user.xsd">
+
+
+    <myname:user id="testbean" userName="hello" email="hello@datamigration.club"/>
+</beans>
