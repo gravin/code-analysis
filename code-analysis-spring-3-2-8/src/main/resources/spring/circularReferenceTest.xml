@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--to debug XmlValidationModeDetector detectValidationMode
+second line
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--<bean id="testA" class="com.codeanalysis.TestA" scope="prototype">-->
+        <!--<property name="testB" ref="testB"></property>-->
+    <!--</bean>-->
+    <!--<bean id="testB" class="com.codeanalysis.TestB" scope="prototype">-->
+        <!--<property name="testC" ref="testC"></property>-->
+    <!--</bean>-->
+    <!--<bean id="testC" class="com.codeanalysis.TestC" scope="prototype">-->
+        <!--<property name="testA" ref="testA"></property>-->
+    <!--</bean>-->
+
+    <bean id="testA" class="com.codeanalysis.TestA">
+        <property name="testB" ref="testB"></property>
+    </bean>
+    <bean id="testB" class="com.codeanalysis.TestB">
+        <property name="testC" ref="testC"></property>
+    </bean>
+    <bean id="testC" class="com.codeanalysis.TestC">
+        <property name="testA" ref="testA"></property>
+    </bean>
+</beans>
