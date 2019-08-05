@@ -1,17 +1,17 @@
 package com.codeanalysis;
 
 public class TestB {
-    private TestC testC;
+    private TestA testA;
 
     public void b() {
-        testC.c();
+        testA.a();
     }
 
-    public TestC getTestC() {
-        return testC;
+    public TestA getTestA() {
+        return testA;
     }
 
-    public void setTestC(TestC testC) {
-        this.testC = testC;
+    public void setTestA(TestA testA) {
+        this.testA = testA;
     }
 }
