@@ -8,7 +8,7 @@ public class HelloWorldTest {
 
     private HelloWorld helloWorld;
 
-    public void setHelloWorldEnglish(HelloWorld helloWorld) {
+    public void setHelloWorld(HelloWorld helloWorld) {
         this.helloWorld = helloWorld;
     }
 
