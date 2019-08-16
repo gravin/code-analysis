@@ -8,8 +8,8 @@ import java.lang.reflect.Method;
 // https://www.cnblogs.com/uu5666/p/8601983.html
 public class BeanInfoUtil2 {
 
-    public static void setPropertyByIntrospector(UserInfo userInfo,String userName)throws Exception{
-        BeanInfo beanInfo= Introspector.getBeanInfo(UserInfo.class);
+    public static void setPropertyByIntrospector(Customer userInfo, String userName)throws Exception{
+        BeanInfo beanInfo= Introspector.getBeanInfo(Customer.class);
         PropertyDescriptor[] proDescrtptors=beanInfo.getPropertyDescriptors();
         if(proDescrtptors!=null&&proDescrtptors.length>0){
             for(PropertyDescriptor propDesc:proDescrtptors){
@@ -23,8 +23,8 @@ public class BeanInfoUtil2 {
         }
     }
 
-    public static void getPropertyByIntrospector(UserInfo userInfo,String userName)throws Exception{
-        BeanInfo beanInfo=Introspector.getBeanInfo(UserInfo.class);
+    public static void getPropertyByIntrospector(Customer userInfo, String userName)throws Exception{
+        BeanInfo beanInfo=Introspector.getBeanInfo(Customer.class);
         PropertyDescriptor[] proDescrtptors=beanInfo.getPropertyDescriptors();
         if(proDescrtptors!=null&&proDescrtptors.length>0){
             for(PropertyDescriptor propDesc:proDescrtptors){
@@ -39,7 +39,7 @@ public class BeanInfoUtil2 {
     }
 
     public static void main(String[] args) throws Exception {
-        UserInfo userInfo=new UserInfo();
+        Customer userInfo=new Customer();
         userInfo.setUserId(123);
         userInfo.setAge(22);
         userInfo.setUserName("helloName");

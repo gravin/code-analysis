@@ -12,7 +12,7 @@ public class HelloWorldTest {
         this.helloWorld = helloWorld;
     }
 
-    public void doSay(){
+    public void doSay() {
         helloWorld.say();
     }
 }
