@@ -11,7 +11,7 @@
 
 
     <bean id="helloWorldTest" class="com.codeanalysis.HelloWorldTest" autowire="byType">
-        <!--<property name="helloWorld" ref="helloWorldEnglish"/>-->
+        <constructor-arg value="2"/>
     </bean>
     <bean id="helloWorldEnglish" class="com.codeanalysis.HelloWorldEnglishImpl"></bean>
 </beans>
