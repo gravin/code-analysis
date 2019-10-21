@@ -29,11 +29,11 @@ final class Handler implements Runnable {
     }
 
     boolean inputIsComplete() { /* ... */
-        return true;
+        return sk.isReadable();
     }
 
     boolean outputIsComplete() { /* ... */
-        return true;
+        return sk.isWritable();
     }
 
     void process() { /* ... */
