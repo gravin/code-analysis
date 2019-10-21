@@ -12,6 +12,10 @@ public class MyTestBean2 implements MyTestBean2Service {
     }
 
     public void test(){
-        System.out.println("test");
+        try {
+            System.out.println("test");
+        }catch (Throwable t){
+
+        }
     }
 }

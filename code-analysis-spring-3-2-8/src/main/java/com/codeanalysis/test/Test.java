@@ -1,40 +1,56 @@
 package com.codeanalysis.test;
 
-import com.codeanalysis.ApiControllerBeanManager;
-import com.codeanalysis.HelloWorld;
-import com.codeanalysis.HelloWorldTest;
-import com.codeanalysis.TestController;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.objectweb.asm.ClassReader;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
+import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Test {
+    // ①通过匿名内部类覆盖ThreadLocal的initialValue()方法，指定初始值
+    private static ThreadLocal<Integer> seqNum = new ThreadLocal<Integer>() {
+        public Integer initialValue() {
+            return 0;
+        }
+    };
 
-    public static void main(String[] args) throws IntrospectionException {
-        BeanInfo beanInfo = Introspector.getBeanInfo(HelloWorldTest.class, Introspector.USE_ALL_BEANINFO);
-        BeanInfo beanInfo2 = Introspector.getBeanInfo(HelloWorldTest.class,Introspector.IGNORE_ALL_BEANINFO);
-        BeanInfo beanInfo3 = Introspector.getBeanInfo(HelloWorldTest.class,Introspector.IGNORE_IMMEDIATE_BEANINFO);
-        System.out.println();
-//        try {
-//            ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring/applicationContext.xml");
-//            context.start();
-//            System.out.println("启动成功");
-//        } catch (Exception e) {
-//            System.out.println("启动失败");
-//            e.printStackTrace();
-//        }
-//        Object bean = ApiControllerBeanManager.getApiController("test","haha.haha","1.0");
-//        ((TestController) bean).test();
+    // ②获取下一个序列值
+    public int getNextNum() {
+        seqNum.set(seqNum.get() + 1);
+        return seqNum.get();
+    }
 
-//        synchronized (Test.class) {
-//            try {
-//                Test.class.wait();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
+    public static void main(String[] args) {
+        System.out.println("main当前线程编号 "+Thread.currentThread().getId());
+        Test sn = new Test();
+        // ③ 3个线程共享sn，各自产生序列号
+        TestClient t1 = new TestClient(sn);
+        TestClient t2 = new TestClient(sn);
+        TestClient t3 = new TestClient(sn);
+        t1.start();
+        t2.start();
+        t3.start();
+    }
 
+    private static class TestClient extends Thread {
+
+        @Override
+        public synchronized void start() {
+            super.start();
+        }
+
+        private Test sn;
+
+        public TestClient(Test sn) {
+            this.sn = sn;
+        }
+
+        public void run() {
+            for (int i = 0; i < 3; i++) {
+                // ④每个线程打出3个序列值
+                System.out.println("thread[" + Thread.currentThread().getName() + "] --> sn["
+                        + sn.getNextNum() + "]");
+            }
+        }
     }
 }
