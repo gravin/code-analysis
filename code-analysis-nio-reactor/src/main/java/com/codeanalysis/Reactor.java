@@ -46,6 +46,7 @@ public class Reactor implements Runnable {
     }
 
     void dispatch(SelectionKey k) {
+        System.out.println("分发 "+k);
         Runnable r = (Runnable) (k.attachment());
         if (r != null)
             r.run();
