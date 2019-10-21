@@ -12,8 +12,8 @@ import java.nio.charset.CharsetDecoder;
 final class Handler implements Runnable {
     final SocketChannel socket;
     final SelectionKey sk;
-    ByteBuffer input = ByteBuffer.allocate(256);
-    ByteBuffer output = ByteBuffer.allocate(256);
+    ByteBuffer input = ByteBuffer.allocate(4);
+    ByteBuffer output = ByteBuffer.allocate(4);
     static final int READING = 0, SENDING = 1;
     int state = READING;
 
@@ -29,11 +29,11 @@ final class Handler implements Runnable {
     }
 
     boolean inputIsComplete() { /* ... */
-        return sk.isReadable();
+        return !input.hasRemaining();
     }
 
     boolean outputIsComplete() { /* ... */
-        return sk.isWritable();
+        return false;
     }
 
     void process() { /* ... */
