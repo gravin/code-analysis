@@ -21,7 +21,7 @@ public class HiHandler extends SimpleChannelHandler {
 		
 		String s = (String) e.getMessage();
 		System.out.println(s);
-		
+
 		super.messageReceived(ctx, e);
 	}
 
