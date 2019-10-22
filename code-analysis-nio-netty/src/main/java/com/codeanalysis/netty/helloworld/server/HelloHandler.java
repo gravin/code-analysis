@@ -23,7 +23,7 @@ public class HelloHandler extends SimpleChannelHandler {
 		System.out.println(s);
 		
 		//回写数据
-		ctx.getChannel().write("hi");
+		ctx.getChannel().write("你好，我是服务端");
 		super.messageReceived(ctx, e);
 	}
 

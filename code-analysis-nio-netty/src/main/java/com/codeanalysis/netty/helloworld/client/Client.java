@@ -52,10 +52,11 @@ public class Client {
 		System.out.println("client start");
 		
 		Scanner scanner = new Scanner(System.in);
-		while(true){
-			System.out.println("请输入");
-			channel.write(scanner.next());
-		}
+//		while(true){
+//			System.out.println("请输入");
+//			channel.write(scanner.next());
+//		}
+		channel.write("我是客户端，你是谁？");
 	}
 
 }
