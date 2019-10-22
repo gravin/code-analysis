@@ -27,7 +27,7 @@ import java.util.Set;
  *
  *
  */
-public class NIOServer {
+public class NIOServer1 {
     public static void main(String[] args) throws IOException {
         Selector serverSelector = Selector.open();
         Selector clientSelector = Selector.open();
