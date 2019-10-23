@@ -23,9 +23,9 @@ public class Server {
 		//服务类
 		ServerBootstrap bootstrap = new ServerBootstrap();
 		
-		//boss线程监听端口，worker线程负责数据读写
-		ExecutorService boss = Executors.newCachedThreadPool();
-		ExecutorService worker = Executors.newCachedThreadPool();
+		//boss线程监听端口，worker线程负责数据读写  --------便于分析查看，只搞一线程
+		ExecutorService boss = Executors.newFixedThreadPool(1);
+		ExecutorService worker = Executors.newFixedThreadPool(1);
 		
 		//设置niosocket工厂
 		bootstrap.setFactory(new NioServerSocketChannelFactory(boss, worker));

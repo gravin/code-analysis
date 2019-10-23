@@ -25,9 +25,9 @@ public class Client {
 		//服务类
 		ClientBootstrap bootstrap = new  ClientBootstrap();
 		
-		//线程池
-		ExecutorService boss = Executors.newCachedThreadPool();
-		ExecutorService worker = Executors.newCachedThreadPool();
+		//线程池-----------便于分析查看，只搞一线程
+		ExecutorService boss = Executors.newFixedThreadPool(1);
+		ExecutorService worker = Executors.newFixedThreadPool(1);
 		
 		//socket工厂
 		bootstrap.setFactory(new NioClientSocketChannelFactory(boss, worker));
@@ -51,12 +51,21 @@ public class Client {
 		
 		System.out.println("client start");
 		
-		Scanner scanner = new Scanner(System.in);
+//		Scanner scanner = new Scanner(System.in);
 //		while(true){
 //			System.out.println("请输入");
 //			channel.write(scanner.next());
 //		}
-		channel.write("我是客户端，你是谁？");
+		int i=0;
+		while(true) {
+			i++;
+			channel.write("我是[客户端，"+i+"号小姐]，你是谁？");
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
