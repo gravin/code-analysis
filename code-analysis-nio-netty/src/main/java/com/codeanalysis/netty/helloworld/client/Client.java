@@ -68,10 +68,9 @@ public class Client {
                 e.printStackTrace();
             }
         }
-        
+        bootstrap.shutdown();
         boss.shutdown();
         worker.shutdown();
-        bootstrap.shutdown();
     }
 
 }

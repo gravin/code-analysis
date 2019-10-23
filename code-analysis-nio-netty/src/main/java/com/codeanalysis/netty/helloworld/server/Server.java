@@ -53,9 +53,9 @@ public class Server {
 
         while (true) {
             if (shutdown) {
+                bootstrap.shutdown();
                 boss.shutdown();
                 worker.shutdown();
-                bootstrap.shutdown();
                 break;
             }
         }
