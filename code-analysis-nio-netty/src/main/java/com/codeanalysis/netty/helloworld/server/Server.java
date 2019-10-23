@@ -11,43 +11,54 @@ import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.string.StringDecoder;
 import org.jboss.netty.handler.codec.string.StringEncoder;
+
 /**
  * netty服务端入门
- * @author -琴兽-
  *
+ * @author -琴兽-
  */
 public class Server {
 
-	public static void main(String[] args) {
+    public static volatile boolean shutdown = false;
 
-		//服务类
-		ServerBootstrap bootstrap = new ServerBootstrap();
-		
-		//boss线程监听端口，worker线程负责数据读写  --------便于分析查看，只搞一线程
-		ExecutorService boss = Executors.newFixedThreadPool(1);
-		ExecutorService worker = Executors.newFixedThreadPool(1);
-		
-		//设置niosocket工厂
-		bootstrap.setFactory(new NioServerSocketChannelFactory(boss, worker));
-		
-		//设置管道的工厂
-		bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
-			
-			@Override
-			public ChannelPipeline getPipeline() throws Exception {
+    public static void main(String[] args) {
 
-				ChannelPipeline pipeline = Channels.pipeline();
-				pipeline.addLast("decoder", new StringDecoder());
-				pipeline.addLast("encoder", new StringEncoder());
-				pipeline.addLast("helloHandler", new HelloHandler());
-				return pipeline;
-			}
-		});
-		
-		bootstrap.bind(new InetSocketAddress(8000));
-		
-		System.out.println("start!!!");
-		
-	}
+        //服务类
+        ServerBootstrap bootstrap = new ServerBootstrap();
+
+        //boss线程监听端口，worker线程负责数据读写  --------便于分析查看，只搞一线程
+        ExecutorService boss = Executors.newFixedThreadPool(1);
+        ExecutorService worker = Executors.newFixedThreadPool(1);
+
+        //设置niosocket工厂
+        bootstrap.setFactory(new NioServerSocketChannelFactory(boss, worker));
+
+        //设置管道的工厂
+        bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
+
+            @Override
+            public ChannelPipeline getPipeline() throws Exception {
+
+                ChannelPipeline pipeline = Channels.pipeline();
+                pipeline.addLast("decoder", new StringDecoder());
+                pipeline.addLast("encoder", new StringEncoder());
+                pipeline.addLast("helloHandler", new HelloHandler());
+                return pipeline;
+            }
+        });
+
+        bootstrap.bind(new InetSocketAddress(8000));
+
+        System.out.println("start!!!");
+
+        while (true) {
+            if (shutdown) {
+                boss.shutdown();
+                worker.shutdown();
+                bootstrap.shutdown();
+                break;
+            }
+        }
+    }
 
 }

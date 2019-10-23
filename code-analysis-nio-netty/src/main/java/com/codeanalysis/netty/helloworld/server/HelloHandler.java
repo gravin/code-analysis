@@ -63,5 +63,6 @@ public class HelloHandler extends SimpleChannelHandler {
     public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         System.out.println("channelClosed");
         super.channelClosed(ctx, e);
+        Server.shutdown = true;
     }
 }
