@@ -9,8 +9,9 @@ import org.springframework.core.io.ClassPathResource;
 
 public class FirstBeanTest {
     public static void main(String[] args) {
-        ApplicationContext applicationContext=new ClassPathXmlApplicationContext("spring/beanFactoryTest.xml");
-        MyTestBean bean= (MyTestBean) applicationContext.getBean("myTestBean");
+        BeanFactory bf = new XmlBeanFactory(new ClassPathResource("spring/beanFactoryTest.xml"));
+//        ApplicationContext applicationContext=new ClassPathXmlApplicationContext("spring/beanFactoryTest.xml");
+        MyTestBean bean= (MyTestBean) bf.getBean("myTestBean");
         System.out.println(bean.getTestStr());
     }
 }
