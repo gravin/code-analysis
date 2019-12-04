@@ -4,8 +4,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -85,6 +88,29 @@ public class XMLReaderSimulator {
         });
         Document doc = builder.parse(new ClassPathResource("spring/beanFactoryTest.xml").getInputStream());
         Element root = doc.getDocumentElement();
-        System.out.println(root);
+        if (isDefaultNamespace(root.getNamespaceURI())) {
+            System.out.println("parsing default namespace:"+root.getTagName());
+            NodeList nl = root.getChildNodes();
+            for (int i = 0; i < nl.getLength(); i++) {
+                Node node = nl.item(i);
+                if (node instanceof Element) {
+                    Element ele = (Element) node;
+                    if (isDefaultNamespace(ele.getNamespaceURI())) {
+                        System.out.println("parsing default namespace:"+ele.getTagName());
+                    }
+                    else {
+
+                    }
+                }
+            }
+        }
+        else {
+
+        }
+    }
+
+
+    public static boolean isDefaultNamespace(String namespaceUri) {
+        return (!StringUtils.hasLength(namespaceUri) || "http://www.springframework.org/schema/beans".equals(namespaceUri));
     }
 }
