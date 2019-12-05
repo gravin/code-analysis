@@ -110,11 +110,15 @@ public class XMLReaderSimulator {
 
     private static void parseDefaultElement(Element ele) {
         if ("bean".equals(ele.getNodeName()) || "bean".equals(ele.getLocalName())) {
-            processBeanDefinition(ele, null);
+            processBeanDefinition(ele);
         }
     }
 
-    private static void processBeanDefinition(Element ele, BeanDefinition containingBean) {
+    private static void processBeanDefinition(Element ele) {
+        BeanDefinitionHolder bdHolder = parseBeanDefinitionElement(ele, null);
+    }
+
+    private static BeanDefinitionHolder parseBeanDefinitionElement(Element ele, BeanDefinition containingBean) {
         String id = ele.getAttribute("id");
         String nameAttr = ele.getAttribute("name");
 
@@ -165,25 +169,31 @@ public class XMLReaderSimulator {
 
 
             // constructors
-            NodeList nl = ele.getChildNodes();
-            for (int i = 0; i < nl.getLength(); i++) {
-                Node node = nl.item(i);
-                if (
-                        (node instanceof Element && (isDefaultNamespace(node.getNamespaceURI()) || !isDefaultNamespace(node.getParentNode().getNamespaceURI())))
-                                &&
-                                ("constructor-arg".equals(node.getNodeName()) || "constructor-arg".equals(node.getLocalName()))
-                ) {
-                    parseConstructorArgElement((Element) node, bd);
-                }
-            }
-
+            parseConstructorArgElements(ele, bd);
             // properties
             parsePropertyElements(ele, bd);
 
+            String[] aliasesArray = aliases.toArray(new String[aliases.size()]);
 
+            return new BeanDefinitionHolder(bd, beanName, aliasesArray);
         } catch (Throwable ex) {
             ex.printStackTrace();
         } finally {
+        }
+        return null;
+    }
+
+    private static void parseConstructorArgElements(Element ele, BeanDefinition bd) {
+        NodeList nl = ele.getChildNodes();
+        for (int i = 0; i < nl.getLength(); i++) {
+            Node node = nl.item(i);
+            if (
+                    (node instanceof Element && (isDefaultNamespace(node.getNamespaceURI()) || !isDefaultNamespace(node.getParentNode().getNamespaceURI())))
+                            &&
+                            ("constructor-arg".equals(node.getNodeName()) || "constructor-arg".equals(node.getLocalName()))
+            ) {
+                parseConstructorArgElement((Element) node, bd);
+            }
         }
     }
 
@@ -212,8 +222,7 @@ public class XMLReaderSimulator {
             Object val = parsePropertyValue(ele, bd, propertyName);
             PropertyValue pv = new PropertyValue(propertyName, val);
             bd.getPropertyValues().addPropertyValue(pv);
-        }
-        finally {
+        } finally {
 
         }
     }
