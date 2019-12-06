@@ -49,4 +49,23 @@ public class AbstractBeanDefinition implements BeanDefinition {
     public void setPropertyValues(MutablePropertyValues propertyValues) {
         this.propertyValues = propertyValues;
     }
+
+    protected AbstractBeanDefinition(BeanDefinition original) {
+        setParentName(original.getParentName());
+        setBeanClassName(original.getBeanClassName());
+        setScope(original.getScope());
+        setRole(original.getRole());
+        setConstructorArgumentValues(new ConstructorArgumentValues(original.getConstructorArgumentValues()));
+        setPropertyValues(new MutablePropertyValues(original.getPropertyValues()));
+
+        if (original instanceof AbstractBeanDefinition) {
+            AbstractBeanDefinition originalAbd = (AbstractBeanDefinition) original;
+            if (originalAbd.hasBeanClass()) {
+                setBeanClass(originalAbd.getBeanClass());
+            }
+        }
+        else {
+
+        }
+    }
 }
