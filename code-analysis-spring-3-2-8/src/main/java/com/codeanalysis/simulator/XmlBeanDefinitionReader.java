@@ -1,5 +1,6 @@
 package com.codeanalysis.simulator;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -16,33 +17,23 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class XMLReaderSimulator {
-    /**
-     * JAXP attribute used to configure the schema language for validation.
-     */
-    private static final String SCHEMA_LANGUAGE_ATTRIBUTE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
+public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
-    /**
-     * JAXP attribute value indicating the XSD schema language.
-     */
-    private static final String XSD_SCHEMA_LANGUAGE = "http://www.w3.org/2001/XMLSchema";
+    public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
+        super(registry);
+    }
 
-    /**
-     * Suffix for DTD files
-     */
-    public static final String DTD_SUFFIX = ".dtd";
-
-    /**
-     * Suffix for schema definition files
-     */
-    public static final String XSD_SUFFIX = ".xsd";
-
-
-    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
+    @Override
+    public int loadBeanDefinitions(Resource resource) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
-        factory.setAttribute(SCHEMA_LANGUAGE_ATTRIBUTE, XSD_SCHEMA_LANGUAGE);
-        DocumentBuilder builder = factory.newDocumentBuilder();
+        factory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
+        DocumentBuilder builder = null;
+        try {
+            builder = factory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
         builder.setErrorHandler(new ErrorHandler() {
             @Override
             public void warning(SAXParseException exception) throws SAXException {
@@ -64,15 +55,16 @@ public class XMLReaderSimulator {
             public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
                 System.out.println("publicId:" + publicId + " systemId:" + systemId);
                 if (systemId != null) {
-                    if (systemId.endsWith(DTD_SUFFIX)) {
+                    if (systemId.endsWith(".dtd")) {
 
-                    } else if (systemId.endsWith(XSD_SUFFIX)) {
+                    } else if (systemId.endsWith(".xsd")) {
                         Properties mappings =
                                 PropertiesLoaderUtils.loadAllProperties("META-INF/spring.schemas");
                         Map<String, String> schemaMappings = new ConcurrentHashMap<String, String>(mappings.size());
                         CollectionUtils.mergePropertiesIntoMap(mappings, schemaMappings);
-
-                        Resource resource = new ClassPathResource(schemaMappings.get(systemId));
+                        String schemaLocation = schemaMappings.get(systemId);
+                        System.out.println("enitity resover used schma location: " + schemaLocation);
+                        Resource resource = new ClassPathResource(schemaLocation);
                         InputSource source = new InputSource(resource.getInputStream());
                         source.setPublicId(publicId);
                         source.setSystemId(systemId);
@@ -82,7 +74,14 @@ public class XMLReaderSimulator {
                 return null;
             }
         });
-        Document doc = builder.parse(new ClassPathResource("spring/beanFactoryTest.xml").getInputStream());
+        Document doc = null;
+        try {
+            doc = builder.parse(new ClassPathResource("spring/beanFactoryTest.xml").getInputStream());
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Element root = doc.getDocumentElement();
         if (isDefaultNamespace(root.getNamespaceURI())) {
             System.out.println("parsing default namespace:" + root.getTagName());
@@ -102,23 +101,29 @@ public class XMLReaderSimulator {
         } else {
 
         }
+        return 0;
     }
 
-    public static boolean isDefaultNamespace(String namespaceUri) {
+    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
+
+    }
+
+    public boolean isDefaultNamespace(String namespaceUri) {
         return (StringUtils.isBlank(namespaceUri) || "http://www.springframework.org/schema/beans".equals(namespaceUri));
     }
 
-    private static void parseDefaultElement(Element ele) {
+    private void parseDefaultElement(Element ele) {
         if ("bean".equals(ele.getNodeName()) || "bean".equals(ele.getLocalName())) {
             processBeanDefinition(ele);
         }
     }
 
-    private static void processBeanDefinition(Element ele) {
+    private void processBeanDefinition(Element ele) {
         BeanDefinitionHolder bdHolder = parseBeanDefinitionElement(ele, null);
+        System.out.println("------------------------解析完BeanDefinition----------------------\n" + JSON.toJSONString(bdHolder, true));
     }
 
-    private static BeanDefinitionHolder parseBeanDefinitionElement(Element ele, BeanDefinition containingBean) {
+    private BeanDefinitionHolder parseBeanDefinitionElement(Element ele, BeanDefinition containingBean) {
         String id = ele.getAttribute("id");
         String nameAttr = ele.getAttribute("name");
 
@@ -183,7 +188,7 @@ public class XMLReaderSimulator {
         return null;
     }
 
-    private static void parseConstructorArgElements(Element ele, BeanDefinition bd) {
+    private void parseConstructorArgElements(Element ele, BeanDefinition bd) {
         NodeList nl = ele.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             Node node = nl.item(i);
@@ -197,7 +202,7 @@ public class XMLReaderSimulator {
         }
     }
 
-    public static void parsePropertyElements(Element beanEle, BeanDefinition bd) {
+    public void parsePropertyElements(Element beanEle, BeanDefinition bd) {
         NodeList nl = beanEle.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             Node node = nl.item(i);
@@ -210,7 +215,7 @@ public class XMLReaderSimulator {
     /**
      * Parse a property element.
      */
-    public static void parsePropertyElement(Element ele, BeanDefinition bd) {
+    public void parsePropertyElement(Element ele, BeanDefinition bd) {
         String propertyName = ele.getAttribute("name");
         if (StringUtils.isBlank(propertyName)) {
             throw new RuntimeException("Tag 'property' must have a 'name' attribute");
@@ -227,7 +232,7 @@ public class XMLReaderSimulator {
         }
     }
 
-    private static void parseConstructorArgElement(Element ele, BeanDefinition bd) {
+    private void parseConstructorArgElement(Element ele, BeanDefinition bd) {
 
         String indexAttr = ele.getAttribute("index");
         String typeAttr = ele.getAttribute("type");
@@ -274,7 +279,7 @@ public class XMLReaderSimulator {
         }
     }
 
-    private static Object parsePropertyValue(Element ele, BeanDefinition bd, String propertyName) {
+    private Object parsePropertyValue(Element ele, BeanDefinition bd, String propertyName) {
         String elementName = (propertyName != null) ?
                 "<property> element for property '" + propertyName + "'" :
                 "<constructor-arg> element";
@@ -319,7 +324,7 @@ public class XMLReaderSimulator {
         }
     }
 
-    private static Object parsePropertySubElement(Element ele, BeanDefinition bd) {
+    private Object parsePropertySubElement(Element ele, BeanDefinition bd) {
 
         if (!isDefaultNamespace(ele.getNamespaceURI())) {
 
@@ -365,7 +370,7 @@ public class XMLReaderSimulator {
         return null;
     }
 
-    public static Object parseValueElement(Element ele) {
+    public Object parseValueElement(Element ele) {
         // It's a literal value.
         String value = getTextValue(ele);
         String specifiedTypeName = ele.getAttribute("type");
@@ -375,15 +380,15 @@ public class XMLReaderSimulator {
         return typedValue;
     }
 
-    public static boolean nodeNameEquals(Node node, String desiredName) {
+    public boolean nodeNameEquals(Node node, String desiredName) {
         return desiredName.equals(node.getNodeName()) || desiredName.equals(node.getLocalName());
     }
 
-    private static boolean isCandidateElement(Node node) {
+    private boolean isCandidateElement(Node node) {
         return (node instanceof Element && (isDefaultNamespace(node.getNamespaceURI()) || !isDefaultNamespace(node.getParentNode().getNamespaceURI())));
     }
 
-    public static String getTextValue(Element valueEle) {
+    public String getTextValue(Element valueEle) {
         StringBuilder sb = new StringBuilder();
         NodeList nl = valueEle.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
