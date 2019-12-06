@@ -8,4 +8,6 @@ public interface BeanDefinition {
     void setParentName(String parentName);
     String getScope();
     void setScope(String scope);
+    boolean isSingleton();
+    boolean isPrototype();
 }

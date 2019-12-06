@@ -1,5 +1,6 @@
 package com.codeanalysis.simulator;
 
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,14 +20,36 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
         }
     }
 
+    public void destroySingleton(String beanName) {
+
+    }
+
     @Override
     public Object getSingleton(String beanName) {
         Object singletonObject = this.singletonObjects.get(beanName);
         return singletonObject;
     }
 
+    public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
+        synchronized (this.singletonObjects) {
+            Object singletonObject = this.singletonObjects.get(beanName);
+            if (singletonObject == null) {
+                try {
+                    singletonObject = singletonFactory.getObject();
+                } catch (RuntimeException ex) {
+                    ex.printStackTrace();
+                } finally {
+
+                }
+            }
+            return singletonObject;
+        }
+    }
+
     @Override
     public boolean containsSingleton(String beanName) {
         return (this.singletonObjects.containsKey(beanName));
     }
+
+
 }

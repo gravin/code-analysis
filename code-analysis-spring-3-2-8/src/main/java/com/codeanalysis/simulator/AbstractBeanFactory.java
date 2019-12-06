@@ -18,9 +18,8 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     protected <T> T doGetBean(
             final String name, final Class<T> requiredType, final Object[] args, boolean typeCheckOnly) {
         final String beanName = name;
-        Object bean;
+        Object bean = null;
 
-        // Eagerly check singleton cache for manually registered singletons.
         Object sharedInstance = getSingleton(beanName);
         if (sharedInstance != null && args == null) {
             bean = sharedInstance;
@@ -29,75 +28,28 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
             try {
                 final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 
-                // Create bean instance.
                 if (mbd.isSingleton()) {
                     sharedInstance = getSingleton(beanName, new ObjectFactory<Object>() {
-                        public Object getObject() throws BeansException {
+                        public Object getObject() {
                             try {
                                 return createBean(beanName, mbd, args);
-                            } catch (BeansException ex) {
-                                // Explicitly remove instance from singleton cache: It might have been put there
-                                // eagerly by the creation process, to allow for circular reference resolution.
-                                // Also remove any beans that received a temporary reference to the bean.
+                            } catch (RuntimeException ex) {
                                 destroySingleton(beanName);
                                 throw ex;
                             }
                         }
                     });
-                    bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
+                    bean = sharedInstance;
                 } else if (mbd.isPrototype()) {
-                    // It's a prototype -> create a new instance.
-                    Object prototypeInstance = null;
-                    try {
-                        beforePrototypeCreation(beanName);
-                        prototypeInstance = createBean(beanName, mbd, args);
-                    } finally {
-                        afterPrototypeCreation(beanName);
-                    }
-                    bean = getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
+
                 } else {
-                    String scopeName = mbd.getScope();
-                    final Scope scope = this.scopes.get(scopeName);
-                    if (scope == null) {
-                        throw new IllegalStateException("No Scope registered for scope '" + scopeName + "'");
-                    }
-                    try {
-                        Object scopedInstance = scope.get(beanName, new ObjectFactory<Object>() {
-                            public Object getObject() throws BeansException {
-                                beforePrototypeCreation(beanName);
-                                try {
-                                    return createBean(beanName, mbd, args);
-                                } finally {
-                                    afterPrototypeCreation(beanName);
-                                }
-                            }
-                        });
-                        bean = getObjectForBeanInstance(scopedInstance, name, beanName, mbd);
-                    } catch (IllegalStateException ex) {
-                        throw new BeanCreationException(beanName,
-                                "Scope '" + scopeName + "' is not active for the current thread; " +
-                                        "consider defining a scoped proxy for this bean if you intend to refer to it from a singleton",
-                                ex);
-                    }
+
                 }
-            } catch (BeansException ex) {
-                cleanupAfterBeanCreationFailure(beanName);
+            } catch (RuntimeException ex) {
                 throw ex;
             }
         }
 
-        // Check if required type matches the type of the actual bean instance.
-        if (requiredType != null && bean != null && !requiredType.isAssignableFrom(bean.getClass())) {
-            try {
-                return getTypeConverter().convertIfNecessary(bean, requiredType);
-            } catch (TypeMismatchException ex) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Failed to convert bean '" + name + "' to required type [" +
-                            ClassUtils.getQualifiedName(requiredType) + "]", ex);
-                }
-                throw new BeanNotOfRequiredTypeException(name, requiredType, bean.getClass());
-            }
-        }
         return (T) bean;
     }
 
@@ -142,4 +94,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     }
 
     protected abstract BeanDefinition getBeanDefinition(String beanName);
+
+    protected abstract Object createBean(String beanName, RootBeanDefinition mbd, Object[] args);
 }

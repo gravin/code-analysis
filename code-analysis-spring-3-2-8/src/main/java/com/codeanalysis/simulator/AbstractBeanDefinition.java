@@ -5,6 +5,8 @@ public abstract class AbstractBeanDefinition implements BeanDefinition {
     private volatile Object beanClass;
     private String scope;
     private boolean lazyInit;
+    private boolean singleton = true;
+    private boolean prototype = false;
 
     private ConstructorArgumentValues constructorArgumentValues;
 
@@ -38,6 +40,13 @@ public abstract class AbstractBeanDefinition implements BeanDefinition {
         this.lazyInit = lazyInit;
     }
 
+    public boolean isSingleton() {
+        return this.singleton;
+    }
+    public boolean isPrototype() {
+        return this.prototype;
+    }
+
     public ConstructorArgumentValues getConstructorArgumentValues() {
         return constructorArgumentValues;
     }
@@ -52,6 +61,9 @@ public abstract class AbstractBeanDefinition implements BeanDefinition {
 
     public void setPropertyValues(MutablePropertyValues propertyValues) {
         this.propertyValues = propertyValues;
+    }
+
+    public AbstractBeanDefinition() {
     }
 
     protected AbstractBeanDefinition(BeanDefinition original) {
