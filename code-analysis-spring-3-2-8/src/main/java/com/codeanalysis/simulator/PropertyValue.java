@@ -17,6 +17,14 @@ public class PropertyValue {
         this.value = value;
     }
 
+    public PropertyValue(PropertyValue original) {
+        this.name = original.getName();
+        this.value = original.getValue();
+        this.optional = original.isOptional();
+        this.converted = original.converted;
+        this.convertedValue = original.convertedValue;
+    }
+
     public String getName() {
         return name;
     }

@@ -17,6 +17,19 @@ public class MutablePropertyValues implements PropertyValues {
         this.propertyValueList = new ArrayList<PropertyValue>(0);
     }
 
+    public MutablePropertyValues(PropertyValues original) {
+        if (original != null) {
+            PropertyValue[] pvs = original.getPropertyValues();
+            this.propertyValueList = new ArrayList<PropertyValue>(pvs.length);
+            for (PropertyValue pv : pvs) {
+                this.propertyValueList.add(new PropertyValue(pv));
+            }
+        }
+        else {
+            this.propertyValueList = new ArrayList<PropertyValue>(0);
+        }
+    }
+
     public PropertyValue[] getPropertyValues() {
         return this.propertyValueList.toArray(new PropertyValue[this.propertyValueList.size()]);
     }

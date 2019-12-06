@@ -1,7 +1,7 @@
 package com.codeanalysis.simulator;
 
 
-public class AbstractBeanDefinition implements BeanDefinition {
+public abstract class AbstractBeanDefinition implements BeanDefinition {
     private volatile Object beanClass;
     private String scope;
     private boolean lazyInit;
@@ -9,6 +9,10 @@ public class AbstractBeanDefinition implements BeanDefinition {
     private ConstructorArgumentValues constructorArgumentValues;
 
     private MutablePropertyValues propertyValues;
+
+    public boolean hasBeanClass() {
+        return (this.beanClass instanceof Class);
+    }
 
     public Object getBeanClass() {
         return beanClass;
@@ -52,9 +56,7 @@ public class AbstractBeanDefinition implements BeanDefinition {
 
     protected AbstractBeanDefinition(BeanDefinition original) {
         setParentName(original.getParentName());
-        setBeanClassName(original.getBeanClassName());
         setScope(original.getScope());
-        setRole(original.getRole());
         setConstructorArgumentValues(new ConstructorArgumentValues(original.getConstructorArgumentValues()));
         setPropertyValues(new MutablePropertyValues(original.getPropertyValues()));
 

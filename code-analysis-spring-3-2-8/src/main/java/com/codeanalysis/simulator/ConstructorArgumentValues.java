@@ -23,6 +23,24 @@ public class ConstructorArgumentValues {
         return this.indexedArgumentValues.containsKey(index);
     }
 
+    public ConstructorArgumentValues(ConstructorArgumentValues original) {
+        addArgumentValues(original);
+    }
+
+
+    public void addArgumentValues(ConstructorArgumentValues other) {
+        if (other != null) {
+            for (Map.Entry<Integer, ValueHolder> entry : other.indexedArgumentValues.entrySet()) {
+                addIndexedArgumentValue(entry.getKey(), entry.getValue().copy());
+            }
+            for (ValueHolder valueHolder : other.genericArgumentValues) {
+                if (!this.genericArgumentValues.contains(valueHolder)) {
+                    addGenericArgumentValue(valueHolder.copy());
+                }
+            }
+        }
+    }
+
     public void addIndexedArgumentValue(int index, ValueHolder newValue) {
         this.indexedArgumentValues.put(index, newValue);
     }
@@ -47,6 +65,12 @@ public class ConstructorArgumentValues {
 
         public ValueHolder(Object value) {
             this.value = value;
+        }
+
+        public ValueHolder(Object value, String type, String name) {
+            this.value = value;
+            this.type = type;
+            this.name = name;
         }
 
         public Object getValue() {
@@ -95,6 +119,12 @@ public class ConstructorArgumentValues {
 
         public void setConvertedValue(Object convertedValue) {
             this.convertedValue = convertedValue;
+        }
+
+        public ValueHolder copy() {
+            ValueHolder copy = new ValueHolder(this.value, this.type, this.name);
+            copy.setSource(this.source);
+            return copy;
         }
     }
 }

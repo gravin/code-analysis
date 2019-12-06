@@ -28,16 +28,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
             try {
                 final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
-                checkMergedBeanDefinition(mbd, beanName, args);
-
-                // Guarantee initialization of beans that the current bean depends on.
-                String[] dependsOn = mbd.getDependsOn();
-                if (dependsOn != null) {
-                    for (String dependsOnBean : dependsOn) {
-                        getBean(dependsOnBean);
-                        registerDependentBean(dependsOnBean, beanName);
-                    }
-                }
 
                 // Create bean instance.
                 if (mbd.isSingleton()) {
@@ -144,11 +134,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
                     mbd.setScope("singleton");
                 }
 
-                // Only cache the merged bean definition if we're already about to create an
-                // instance of the bean, or at least have already created an instance before.
-                if (isCacheBeanMetadata() && isBeanEligibleForMetadataCaching(beanName)) {
-                    this.mergedBeanDefinitions.put(beanName, mbd);
-                }
+                this.mergedBeanDefinitions.put(beanName, mbd);
             }
 
             return mbd;
