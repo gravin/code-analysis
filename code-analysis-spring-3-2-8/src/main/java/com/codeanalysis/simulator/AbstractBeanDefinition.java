@@ -16,8 +16,17 @@ public abstract class AbstractBeanDefinition implements BeanDefinition {
         return (this.beanClass instanceof Class);
     }
 
-    public Object getBeanClass() {
-        return beanClass;
+    public  Class<?> getBeanClass() {
+
+        Object beanClassObject = this.beanClass;
+        if (beanClassObject == null) {
+            throw new IllegalStateException("No bean class specified on bean definition");
+        }
+        if (!(beanClassObject instanceof Class)) {
+            throw new IllegalStateException(
+                    "Bean class name [" + beanClassObject + "] has not been resolved into an actual Class");
+        }
+        return (Class<?>) beanClassObject;
     }
 
     public void setBeanClass(Object beanClass) {

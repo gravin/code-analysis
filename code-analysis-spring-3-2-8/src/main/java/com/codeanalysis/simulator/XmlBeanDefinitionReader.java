@@ -119,8 +119,21 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     }
 
     private void processBeanDefinition(Element ele) {
-        BeanDefinitionHolder bdHolder = parseBeanDefinitionElement(ele, null);
-        System.out.println("------------------------解析完BeanDefinition----------------------\n" + JSON.toJSONString(bdHolder, true));
+        BeanDefinitionHolder definitionHolder = parseBeanDefinitionElement(ele, null);
+        // Register bean definition under primary name.
+        String beanName = definitionHolder.getBeanName();
+        getRegistry().registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
+
+        // Register aliases for bean name, if any.
+        String[] aliases = definitionHolder.getAliases();
+        if (aliases != null) {
+            for (String aliase : aliases) {
+                getRegistry().registerAlias(beanName, aliase);
+            }
+        }
+        System.out.println("------------------------解析BeanDefinition结果----------------------");
+        System.out.println(JSON.toJSONString(definitionHolder, true));
+        System.out.println("------------------------解析BeanDefinition结果----------------------");
     }
 
     private BeanDefinitionHolder parseBeanDefinitionElement(Element ele, BeanDefinition containingBean) {
