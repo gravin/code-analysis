@@ -6,6 +6,7 @@ second line
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!--<bean class="com.codeanalysis.MyBeanPostProcessor"/>-->
     <bean id="testA" class="com.codeanalysis.TestA">
         <property name="testB" ref="testB"></property>
     </bean>
