@@ -24,17 +24,19 @@ public class Test33 {
 //
 //        System.out.println(ClassUtils.isAssignable(long.class,int.class));
 
-        Map<String, String> map = System.getenv();
-        for(Iterator<String> it = map.keySet().iterator(); it.hasNext();){
-            String key = it.next();
-            System.out.println(key + "=" + map.get(key));
-        }
-        System.out.println("---------------------------");
-        Properties properties = System.getProperties();
-        for(Iterator<Object> it = properties.keySet().iterator(); it.hasNext();){
-            Object key = it.next();
-            System.out.println(key + "=" + map.get(key));
-        }
+//        Map<String, String> map = System.getenv();
+//        for(Iterator<String> it = map.keySet().iterator(); it.hasNext();){
+//            String key = it.next();
+//            System.out.println(key + "=" + map.get(key));
+//        }
+//        System.out.println("---------------------------");
+//        Properties properties = System.getProperties();
+//        for(Iterator<Object> it = properties.keySet().iterator(); it.hasNext();){
+//            Object key = it.next();
+//            System.out.println(key + "=" + map.get(key));
+//        }
 
+        System.out.println(Number.class.isAssignableFrom(Integer.class));
+        System.out.println(Integer.class.isAssignableFrom(Number.class));
     }
 }
