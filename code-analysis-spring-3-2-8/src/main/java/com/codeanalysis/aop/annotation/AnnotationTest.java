@@ -6,6 +6,8 @@ package com.codeanalysis.aop.annotation;
  *
  */
 
+import org.aspectj.lang.annotation.Before;
+
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;
@@ -81,6 +83,7 @@ public class AnnotationTest {
             MyAnnotation myAnnotation = method.getAnnotation(MyAnnotation.class);
             // 获取 myAnnotation的值，并打印出来,此处其实是调用MyAnnotation实例的value方法
             String[] values = myAnnotation.value();
+            String argNames = ((Before) myAnnotation).argNames();
             for (String str:values)
                 System.out.printf(str+", ");
             System.out.println();
