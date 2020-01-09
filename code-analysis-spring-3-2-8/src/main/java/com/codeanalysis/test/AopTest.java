@@ -1,7 +1,7 @@
 package com.codeanalysis.test;
 
 import com.codeanalysis.aop.MathCalculator;
-import com.codeanalysis.config.MainConfigOfAOP;
+import com.codeanalysis.aop.MainConfigOfAOP;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class AopTest {
