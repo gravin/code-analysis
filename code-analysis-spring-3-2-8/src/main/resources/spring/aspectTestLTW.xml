@@ -13,5 +13,5 @@
     <aop:aspectj-autoproxy/>
     <bean id="test" class="com.codeanalysis.MyTestBean"/>
     <bean class="com.codeanalysis.aop.AspectJTest"/>
-    <context:load-time-weaver/>
+    <context:load-time-weaver aspectj-weaving="autodetect"/>
 </beans>
