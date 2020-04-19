@@ -24,11 +24,11 @@ public class Test05 {
 //			m.put(i, b);
 //		}
 //		
-//		for(int k = 0; k<20; k++) {
-//			for(int j = 0; j<300; j++){
-//				byte[] b = new byte[1024*1024]; 
-//			}
-//		}
+		for(int k = 0; k<20; k++) {
+			for(int j = 0; j<300; j++){
+				byte[] b = new byte[1024*1024];
+			}
+		}
 		
 	
 	}
