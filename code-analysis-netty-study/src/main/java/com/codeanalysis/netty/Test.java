@@ -11,13 +11,13 @@ public class Test {
         }
     }
 
-    public void Hello() {
+    public void hello() {
         InnerTest innerTest = new InnerTest();
         innerTest.hello();
     }
 
     public static void main(String[] args) {
         Test test = new Test();
-        test.Hello();
+        test.hello();
     }
 }
