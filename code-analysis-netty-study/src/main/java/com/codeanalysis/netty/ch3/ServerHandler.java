@@ -1,7 +1,9 @@
 package com.codeanalysis.netty.ch3;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.ReferenceCountUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +25,18 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("收到消息:");
+        ByteBuf in = (ByteBuf) msg;
+        try {
+            System.out.print("message received: ");
+            while(in.isReadable()){
+                System.out.print((char)in.readByte());
+                System.out.flush();
+            }
+        }finally{
+            ReferenceCountUtil.release(msg); // (2)
+        }
+        ctx.close();
 //        super.channelRead(ctx, msg);
 
 //        new Thread(new Runnable() {

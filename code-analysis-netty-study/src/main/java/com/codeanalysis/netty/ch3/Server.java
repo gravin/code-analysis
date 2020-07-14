@@ -15,7 +15,7 @@ public final class Server {
 
     public static void main(String[] args) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup(1);
 
         try {
             ServerBootstrap b = new ServerBootstrap();
@@ -23,15 +23,15 @@ public final class Server {
                     .channel(NioServerSocketChannel.class)
                     .childOption(ChannelOption.TCP_NODELAY, true)
                     .childAttr(AttributeKey.newInstance("childAttr"), "childAttrValue")
-                    .handler(new ServerHandler())
+//                    .handler(new ServerHandler())
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) {
-//                            ch.pipeline().addLast(new AuthHandler());
+                            ch.pipeline().addLast(new DiscardServerHandler());
                             //..
-
                         }
-                    });
+                    })
+            ;
 
             ChannelFuture f = b.bind(8888).sync();
 
