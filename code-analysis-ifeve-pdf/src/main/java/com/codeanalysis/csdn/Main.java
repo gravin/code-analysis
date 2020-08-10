@@ -59,7 +59,9 @@ public class Main {
 
 
         addStyles(document.getElementById("mainBox"), ";width:100%");
-        addStyles(document.getElementsByTag("main").get(0), ";display:content;float:left");
+        addClasses(document.getElementById("mainBox"), "clearfix d-flex justify-content-center");
+
+        addStyles(document.getElementsByClass("blog-content-box").get(0), "margin:0 5%;");
 
 
 //        document.getElementsByTag("main").get(0).attr("style", document.getElementsByTag("main").get(0).attr("style") + ";display:content;float:left;");
@@ -107,6 +109,18 @@ public class Main {
 
 
         System.out.println(html.getName() + " has been modified");
+    }
+
+    private static void addClasses(Element element, String classString) {
+        if (StringUtils.isBlank(classString)) {
+            return;
+        }
+        String[] classes = classString.split(" ");
+        for (String cls : classes) {
+            if (StringUtils.isNotBlank(cls) && !element.className().contains(cls)) {
+                element.addClass(cls);
+            }
+        }
     }
 
     private static void addStyles(Element element, String styleString) {
