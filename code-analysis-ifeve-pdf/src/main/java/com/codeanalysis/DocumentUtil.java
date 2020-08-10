@@ -1,4 +1,4 @@
-package com.codeanalysis.ifeve;
+package com.codeanalysis;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -1,5 +1,6 @@
 package com.codeanalysis.ifeve;
 
+import com.codeanalysis.DocumentUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
@@ -24,6 +25,8 @@ public class Main {
         replaceHtml(html);
 
         Document document = DocumentUtil.getDocument(html, new HashMap<>());
+        document.outputSettings().prettyPrint(false);  //重要，否则会莫名其妙给你添加换行
+
         List<String> idsToRemove = Arrays.asList("header", "bread_crumb", "comments_wrapper", "previous_next_post_single"
                 , "container", "right_col", "footer", "wpstats", "google_esf"
         );
