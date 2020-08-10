@@ -61,7 +61,7 @@ public class Main {
         addStyles(document.getElementById("mainBox"), ";width:100%");
         addClasses(document.getElementById("mainBox"), "clearfix d-flex justify-content-center");
 
-        addStyles(document.getElementsByClass("blog-content-box").get(0), "margin:0 5%;");
+        addStyles(document.getElementsByClass("blog-content-box").get(0), "margin:0 8%;");
 
 
 //        document.getElementsByTag("main").get(0).attr("style", document.getElementsByTag("main").get(0).attr("style") + ";display:content;float:left;");
