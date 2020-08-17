@@ -33,7 +33,7 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package com.codeanalysis.jdk.locks;
+package com.codeanalysis.jdk.concurrent.locks;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;

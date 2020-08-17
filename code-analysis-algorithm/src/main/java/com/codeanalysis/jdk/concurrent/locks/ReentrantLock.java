@@ -33,13 +33,13 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package com.codeanalysis.jdk.locks;
+package com.codeanalysis.jdk.concurrent.locks;
 
 import java.util.concurrent.TimeUnit;
 import java.util.Collection;
 
 /**
- * A reentrant mutual exclusion {@link com.codeanalysis.jdk.locks.Lock} with the same basic
+ * A reentrant mutual exclusion {@link com.codeanalysis.jdk.concurrent.locks.Lock} with the same basic
  * behavior and semantics as the implicit monitor lock accessed using
  * {@code synchronized} methods and statements, but with extended
  * capabilities.
@@ -88,7 +88,7 @@ import java.util.Collection;
  *   }
  * }}</pre>
  *
- * <p>In addition to implementing the {@link com.codeanalysis.jdk.locks.Lock} interface, this
+ * <p>In addition to implementing the {@link com.codeanalysis.jdk.concurrent.locks.Lock} interface, this
  * class defines a number of {@code public} and {@code protected}
  * methods for inspecting the state of the lock.  Some of these
  * methods are only useful for instrumentation and monitoring.
@@ -104,7 +104,7 @@ import java.util.Collection;
  * @author Doug Lea
  * @since 1.5
  */
-public class ReentrantLock implements com.codeanalysis.jdk.locks.Lock, java.io.Serializable {
+public class ReentrantLock implements com.codeanalysis.jdk.concurrent.locks.Lock, java.io.Serializable {
     private static final long serialVersionUID = 7373984872572414699L;
     /**
      * Synchronizer providing all implementation mechanics
@@ -116,11 +116,11 @@ public class ReentrantLock implements com.codeanalysis.jdk.locks.Lock, java.io.S
      * into fair and nonfair versions below. Uses AQS state to
      * represent the number of holds on the lock.
      */
-    abstract static class Sync extends com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer {
+    abstract static class Sync extends com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer {
         private static final long serialVersionUID = -5179523762034025860L;
 
         /**
-         * Performs {@link com.codeanalysis.jdk.locks.Lock#lock}. The main reason for subclassing
+         * Performs {@link com.codeanalysis.jdk.concurrent.locks.Lock#lock}. The main reason for subclassing
          * is to allow fast path for nonfair version.
          */
         abstract void lock();
@@ -463,10 +463,10 @@ public class ReentrantLock implements com.codeanalysis.jdk.locks.Lock, java.io.S
     }
 
     /**
-     * Returns a {@link com.codeanalysis.jdk.locks.Condition} instance for use with this
+     * Returns a {@link com.codeanalysis.jdk.concurrent.locks.Condition} instance for use with this
      * {@link Lock} instance.
      *
-     * <p>The returned {@link com.codeanalysis.jdk.locks.Condition} instance supports the same
+     * <p>The returned {@link com.codeanalysis.jdk.concurrent.locks.Condition} instance supports the same
      * usages as do the {@link Object} monitor methods ({@link
      * Object#wait() wait}, {@link Object#notify notify}, and {@link
      * Object#notifyAll notifyAll}) when used with the built-in
@@ -474,12 +474,12 @@ public class ReentrantLock implements com.codeanalysis.jdk.locks.Lock, java.io.S
      *
      * <ul>
      *
-     * <li>If this lock is not held when any of the {@link com.codeanalysis.jdk.locks.Condition}
-     * {@linkplain com.codeanalysis.jdk.locks.Condition#await() waiting} or {@linkplain
-     * com.codeanalysis.jdk.locks.Condition#signal signalling} methods are called, then an {@link
+     * <li>If this lock is not held when any of the {@link com.codeanalysis.jdk.concurrent.locks.Condition}
+     * {@linkplain com.codeanalysis.jdk.concurrent.locks.Condition#await() waiting} or {@linkplain
+     * com.codeanalysis.jdk.concurrent.locks.Condition#signal signalling} methods are called, then an {@link
      * IllegalMonitorStateException} is thrown.
      *
-     * <li>When the condition {@linkplain com.codeanalysis.jdk.locks.Condition#await() waiting}
+     * <li>When the condition {@linkplain com.codeanalysis.jdk.concurrent.locks.Condition#await() waiting}
      * methods are called the lock is released and, before they
      * return, the lock is reacquired and the lock hold count restored
      * to what it was when the method was called.
@@ -501,7 +501,7 @@ public class ReentrantLock implements com.codeanalysis.jdk.locks.Lock, java.io.S
      *
      * @return the Condition object
      */
-    public com.codeanalysis.jdk.locks.Condition newCondition() {
+    public com.codeanalysis.jdk.concurrent.locks.Condition newCondition() {
         return sync.newCondition();
     }
 
@@ -694,12 +694,12 @@ public class ReentrantLock implements com.codeanalysis.jdk.locks.Lock, java.io.S
      *                                      not associated with this lock
      * @throws NullPointerException         if the condition is null
      */
-    public boolean hasWaiters(com.codeanalysis.jdk.locks.Condition condition) {
+    public boolean hasWaiters(com.codeanalysis.jdk.concurrent.locks.Condition condition) {
         if (condition == null)
             throw new NullPointerException();
-        if (!(condition instanceof com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer.ConditionObject))
+        if (!(condition instanceof com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject))
             throw new IllegalArgumentException("not owner");
-        return sync.hasWaiters((com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer.ConditionObject) condition);
+        return sync.hasWaiters((com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject) condition);
     }
 
     /**
@@ -717,12 +717,12 @@ public class ReentrantLock implements com.codeanalysis.jdk.locks.Lock, java.io.S
      *                                      not associated with this lock
      * @throws NullPointerException         if the condition is null
      */
-    public int getWaitQueueLength(com.codeanalysis.jdk.locks.Condition condition) {
+    public int getWaitQueueLength(com.codeanalysis.jdk.concurrent.locks.Condition condition) {
         if (condition == null)
             throw new NullPointerException();
-        if (!(condition instanceof com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer.ConditionObject))
+        if (!(condition instanceof com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject))
             throw new IllegalArgumentException("not owner");
-        return sync.getWaitQueueLength((com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer.ConditionObject) condition);
+        return sync.getWaitQueueLength((com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject) condition);
     }
 
     /**
@@ -745,7 +745,7 @@ public class ReentrantLock implements com.codeanalysis.jdk.locks.Lock, java.io.S
     protected Collection<Thread> getWaitingThreads(Condition condition) {
         if (condition == null)
             throw new NullPointerException();
-        if (!(condition instanceof com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer.ConditionObject))
+        if (!(condition instanceof com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject))
             throw new IllegalArgumentException("not owner");
         return sync.getWaitingThreads((AbstractQueuedSynchronizer.ConditionObject) condition);
     }

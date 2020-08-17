@@ -1,7 +1,7 @@
 package com.codeanalysis;
 
 
-import com.codeanalysis.jdk.locks.ReentrantLock;
+import com.codeanalysis.jdk.concurrent.locks.ReentrantLock;
 
 /**
  * @author Gavin

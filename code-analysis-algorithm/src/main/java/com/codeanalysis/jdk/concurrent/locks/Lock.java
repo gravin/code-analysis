@@ -33,7 +33,7 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package com.codeanalysis.jdk.locks;
+package com.codeanalysis.jdk.concurrent.locks;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
  * operations than can be obtained using {@code synchronized} methods
  * and statements.  They allow more flexible structuring, may have
  * quite different properties, and may support multiple associated
- * {@link com.codeanalysis.jdk.locks.Condition} objects.
+ * {@link com.codeanalysis.jdk.concurrent.locks.Condition} objects.
  *
  * <p>A lock is a tool for controlling access to a shared resource by
  * multiple threads. Commonly, a lock provides exclusive access to a
@@ -158,7 +158,7 @@ import java.util.concurrent.TimeUnit;
  * the thread. An implementation should document this behavior.
  *
  * @see ReentrantLock
- * @see com.codeanalysis.jdk.locks.Condition
+ * @see com.codeanalysis.jdk.concurrent.locks.Condition
  * @see ReadWriteLock
  *
  * @since 1.5
@@ -335,21 +335,21 @@ public interface Lock {
     void unlock();
 
     /**
-     * Returns a new {@link com.codeanalysis.jdk.locks.Condition} instance that is bound to this
+     * Returns a new {@link com.codeanalysis.jdk.concurrent.locks.Condition} instance that is bound to this
      * {@code Lock} instance.
      *
      * <p>Before waiting on the condition the lock must be held by the
      * current thread.
-     * A call to {@link com.codeanalysis.jdk.locks.Condition#await()} will atomically release the lock
+     * A call to {@link com.codeanalysis.jdk.concurrent.locks.Condition#await()} will atomically release the lock
      * before waiting and re-acquire the lock before the wait returns.
      *
      * <p><b>Implementation Considerations</b>
      *
-     * <p>The exact operation of the {@link com.codeanalysis.jdk.locks.Condition} instance depends on
+     * <p>The exact operation of the {@link com.codeanalysis.jdk.concurrent.locks.Condition} instance depends on
      * the {@code Lock} implementation and must be documented by that
      * implementation.
      *
-     * @return A new {@link com.codeanalysis.jdk.locks.Condition} instance for this {@code Lock} instance
+     * @return A new {@link com.codeanalysis.jdk.concurrent.locks.Condition} instance for this {@code Lock} instance
      * @throws UnsupportedOperationException if this {@code Lock}
      *         implementation does not support conditions
      */

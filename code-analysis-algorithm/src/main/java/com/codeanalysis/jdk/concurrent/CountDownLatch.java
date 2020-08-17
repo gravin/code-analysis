@@ -34,7 +34,7 @@
  */
 
 package com.codeanalysis.jdk.concurrent;
-import com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer;
+import com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer;
 
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;

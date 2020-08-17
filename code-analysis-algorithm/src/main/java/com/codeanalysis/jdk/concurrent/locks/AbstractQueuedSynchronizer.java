@@ -33,7 +33,7 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package com.codeanalysis.jdk.locks;
+package com.codeanalysis.jdk.concurrent.locks;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
@@ -128,7 +128,7 @@ import sun.misc.Unsafe;
  * {@code final} because they cannot be independently varied.
  *
  * <p>You may also find the inherited methods from {@link
- * com.codeanalysis.jdk.locks.AbstractOwnableSynchronizer} useful to keep track of the thread
+ * com.codeanalysis.jdk.concurrent.locks.AbstractOwnableSynchronizer} useful to keep track of the thread
  * owning an exclusive synchronizer.  You are encouraged to use them
  * -- this enables monitoring and diagnostic tools to assist users in
  * determining which threads hold locks.

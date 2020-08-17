@@ -34,8 +34,8 @@
  */
 
 package com.codeanalysis.jdk.concurrent;
-import com.codeanalysis.jdk.locks.Condition;
-import com.codeanalysis.jdk.locks.ReentrantLock;
+import com.codeanalysis.jdk.concurrent.locks.Condition;
+import com.codeanalysis.jdk.concurrent.locks.ReentrantLock;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.TimeUnit;

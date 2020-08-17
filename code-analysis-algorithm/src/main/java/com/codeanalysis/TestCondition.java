@@ -1,8 +1,8 @@
 package com.codeanalysis;
 
-import com.codeanalysis.jdk.locks.Condition;
-import com.codeanalysis.jdk.locks.Lock;
-import com.codeanalysis.jdk.locks.ReentrantLock;
+import com.codeanalysis.jdk.concurrent.locks.Condition;
+import com.codeanalysis.jdk.concurrent.locks.Lock;
+import com.codeanalysis.jdk.concurrent.locks.ReentrantLock;
 
 /**
  * @author Gavin

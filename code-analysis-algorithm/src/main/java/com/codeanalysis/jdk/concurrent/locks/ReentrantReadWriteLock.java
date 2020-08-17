@@ -33,13 +33,13 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package com.codeanalysis.jdk.locks;
+package com.codeanalysis.jdk.concurrent.locks;
 import java.util.concurrent.TimeUnit;
 import java.util.Collection;
 
 /**
- * An implementation of {@link com.codeanalysis.jdk.locks.ReadWriteLock} supporting similar
- * semantics to {@link com.codeanalysis.jdk.locks.ReentrantLock}.
+ * An implementation of {@link com.codeanalysis.jdk.concurrent.locks.ReadWriteLock} supporting similar
+ * semantics to {@link com.codeanalysis.jdk.concurrent.locks.ReentrantLock}.
  * <p>This class has the following properties:
  *
  * <ul>
@@ -86,7 +86,7 @@ import java.util.Collection;
  * <li><b>Reentrancy</b>
  *
  * <p>This lock allows both readers and writers to reacquire read or
- * write locks in the style of a {@link com.codeanalysis.jdk.locks.ReentrantLock}. Non-reentrant
+ * write locks in the style of a {@link com.codeanalysis.jdk.concurrent.locks.ReentrantLock}. Non-reentrant
  * readers are not allowed until all write locks held by the writing
  * thread have been released.
  *
@@ -106,14 +106,14 @@ import java.util.Collection;
  * <p>The read lock and write lock both support interruption during lock
  * acquisition.
  *
- * <li><b>{@link com.codeanalysis.jdk.locks.Condition} support</b>
- * <p>The write lock provides a {@link com.codeanalysis.jdk.locks.Condition} implementation that
+ * <li><b>{@link com.codeanalysis.jdk.concurrent.locks.Condition} support</b>
+ * <p>The write lock provides a {@link com.codeanalysis.jdk.concurrent.locks.Condition} implementation that
  * behaves in the same way, with respect to the write lock, as the
- * {@link com.codeanalysis.jdk.locks.Condition} implementation provided by
- * {@link com.codeanalysis.jdk.locks.ReentrantLock#newCondition} does for {@link ReentrantLock}.
- * This {@link com.codeanalysis.jdk.locks.Condition} can, of course, only be used with the write lock.
+ * {@link com.codeanalysis.jdk.concurrent.locks.Condition} implementation provided by
+ * {@link com.codeanalysis.jdk.concurrent.locks.ReentrantLock#newCondition} does for {@link ReentrantLock}.
+ * This {@link com.codeanalysis.jdk.concurrent.locks.Condition} can, of course, only be used with the write lock.
  *
- * <p>The read lock does not support a {@link com.codeanalysis.jdk.locks.Condition} and
+ * <p>The read lock does not support a {@link com.codeanalysis.jdk.concurrent.locks.Condition} and
  * {@code readLock().newCondition()} throws
  * {@code UnsupportedOperationException}.
  *
@@ -249,7 +249,7 @@ public class ReentrantReadWriteLock
      * Synchronization implementation for ReentrantReadWriteLock.
      * Subclassed into fair and nonfair versions.
      */
-    abstract static class Sync extends com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer {
+    abstract static class Sync extends com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer {
         private static final long serialVersionUID = 6317671515068378041L;
 
         /*
@@ -699,7 +699,7 @@ public class ReentrantReadWriteLock
     /**
      * The lock returned by method {@link ReentrantReadWriteLock#readLock}.
      */
-    public static class ReadLock implements com.codeanalysis.jdk.locks.Lock, java.io.Serializable {
+    public static class ReadLock implements com.codeanalysis.jdk.concurrent.locks.Lock, java.io.Serializable {
         private static final long serialVersionUID = -5992448646407690164L;
         private final Sync sync;
 
@@ -887,7 +887,7 @@ public class ReentrantReadWriteLock
          *
          * @throws UnsupportedOperationException always
          */
-        public com.codeanalysis.jdk.locks.Condition newCondition() {
+        public com.codeanalysis.jdk.concurrent.locks.Condition newCondition() {
             throw new UnsupportedOperationException();
         }
 
@@ -908,7 +908,7 @@ public class ReentrantReadWriteLock
     /**
      * The lock returned by method {@link ReentrantReadWriteLock#writeLock}.
      */
-    public static class WriteLock implements com.codeanalysis.jdk.locks.Lock, java.io.Serializable {
+    public static class WriteLock implements com.codeanalysis.jdk.concurrent.locks.Lock, java.io.Serializable {
         private static final long serialVersionUID = -4992448646407690164L;
         private final Sync sync;
 
@@ -1132,9 +1132,9 @@ public class ReentrantReadWriteLock
         }
 
         /**
-         * Returns a {@link com.codeanalysis.jdk.locks.Condition} instance for use with this
+         * Returns a {@link com.codeanalysis.jdk.concurrent.locks.Condition} instance for use with this
          * {@link Lock} instance.
-         * <p>The returned {@link com.codeanalysis.jdk.locks.Condition} instance supports the same
+         * <p>The returned {@link com.codeanalysis.jdk.concurrent.locks.Condition} instance supports the same
          * usages as do the {@link Object} monitor methods ({@link
          * Object#wait() wait}, {@link Object#notify notify}, and {@link
          * Object#notifyAll notifyAll}) when used with the built-in
@@ -1143,7 +1143,7 @@ public class ReentrantReadWriteLock
          * <ul>
          *
          * <li>If this write lock is not held when any {@link
-         * com.codeanalysis.jdk.locks.Condition} method is called then an {@link
+         * com.codeanalysis.jdk.concurrent.locks.Condition} method is called then an {@link
          * IllegalMonitorStateException} is thrown.  (Read locks are
          * held independently of write locks, so are not checked or
          * affected. However it is essentially always an error to
@@ -1152,7 +1152,7 @@ public class ReentrantReadWriteLock
          * could unblock it will not be able to acquire the write
          * lock.)
          *
-         * <li>When the condition {@linkplain com.codeanalysis.jdk.locks.Condition#await() waiting}
+         * <li>When the condition {@linkplain com.codeanalysis.jdk.concurrent.locks.Condition#await() waiting}
          * methods are called the write lock is released and, before
          * they return, the write lock is reacquired and the lock hold
          * count restored to what it was when the method was called.
@@ -1174,7 +1174,7 @@ public class ReentrantReadWriteLock
          *
          * @return the Condition object
          */
-        public com.codeanalysis.jdk.locks.Condition newCondition() {
+        public com.codeanalysis.jdk.concurrent.locks.Condition newCondition() {
             return sync.newCondition();
         }
 
@@ -1409,12 +1409,12 @@ public class ReentrantReadWriteLock
      *         not associated with this lock
      * @throws NullPointerException if the condition is null
      */
-    public boolean hasWaiters(com.codeanalysis.jdk.locks.Condition condition) {
+    public boolean hasWaiters(com.codeanalysis.jdk.concurrent.locks.Condition condition) {
         if (condition == null)
             throw new NullPointerException();
-        if (!(condition instanceof com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer.ConditionObject))
+        if (!(condition instanceof com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject))
             throw new IllegalArgumentException("not owner");
-        return sync.hasWaiters((com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer.ConditionObject)condition);
+        return sync.hasWaiters((com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject)condition);
     }
 
     /**
@@ -1432,12 +1432,12 @@ public class ReentrantReadWriteLock
      *         not associated with this lock
      * @throws NullPointerException if the condition is null
      */
-    public int getWaitQueueLength(com.codeanalysis.jdk.locks.Condition condition) {
+    public int getWaitQueueLength(com.codeanalysis.jdk.concurrent.locks.Condition condition) {
         if (condition == null)
             throw new NullPointerException();
-        if (!(condition instanceof com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer.ConditionObject))
+        if (!(condition instanceof com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject))
             throw new IllegalArgumentException("not owner");
-        return sync.getWaitQueueLength((com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer.ConditionObject)condition);
+        return sync.getWaitQueueLength((com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject)condition);
     }
 
     /**
@@ -1460,7 +1460,7 @@ public class ReentrantReadWriteLock
     protected Collection<Thread> getWaitingThreads(Condition condition) {
         if (condition == null)
             throw new NullPointerException();
-        if (!(condition instanceof com.codeanalysis.jdk.locks.AbstractQueuedSynchronizer.ConditionObject))
+        if (!(condition instanceof com.codeanalysis.jdk.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject))
             throw new IllegalArgumentException("not owner");
         return sync.getWaitingThreads((AbstractQueuedSynchronizer.ConditionObject)condition);
     }
