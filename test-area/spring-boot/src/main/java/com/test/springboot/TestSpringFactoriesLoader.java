@@ -5,6 +5,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.util.ClassUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Gavin
@@ -13,6 +14,6 @@ import java.util.List;
 public class TestSpringFactoriesLoader {
     public static void main(String[] args) {
         List<String> list = SpringFactoriesLoader.loadFactoryNames(ApplicationContextInitializer.class, ClassUtils.getDefaultClassLoader());
-        System.out.println("SpringFactoriesLoader loading "+list);
+        System.out.println("SpringFactoriesLoader loaded \n"+list.stream().collect(Collectors.joining("\n")));
     }
 }
