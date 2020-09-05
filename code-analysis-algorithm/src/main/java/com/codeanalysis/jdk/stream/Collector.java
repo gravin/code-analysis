@@ -194,7 +194,7 @@ import java.util.function.Supplier;
  * @param <R> the result type of the reduction operation
  * @since 1.8
  */
-public interface Collector<T, A, R> {
+public interface Collector<T, A, R>  {
     /**
      * A function that creates and returns a new mutable result container.
      *
