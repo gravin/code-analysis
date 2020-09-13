@@ -1,4 +1,4 @@
-package com.gupaoedu.springboot.test;
+package com.codeanalysis.springboot.test;
 
 /**
  * @author Gavin

@@ -1,4 +1,4 @@
-package com.gupaoedu.springboot.annotation;
+package com.codeanalysis.springboot.annotation;
 
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.context.annotation.Import;

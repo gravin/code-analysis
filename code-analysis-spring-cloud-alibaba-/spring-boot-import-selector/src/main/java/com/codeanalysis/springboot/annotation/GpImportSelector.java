@@ -1,7 +1,7 @@
-package com.gupaoedu.springboot.annotation;
+package com.codeanalysis.springboot.annotation;
 
-import com.gupaoedu.springboot.test.FirstClass;
-import com.gupaoedu.springboot.test.SecondClass;
+import com.codeanalysis.springboot.test.FirstClass;
+import com.codeanalysis.springboot.test.SecondClass;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
