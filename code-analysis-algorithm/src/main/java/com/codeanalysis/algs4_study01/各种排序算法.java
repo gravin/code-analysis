@@ -8,17 +8,90 @@ import java.util.Arrays;
 /**
  * @author Gavin
  * @date 2020/10/5
+ *
+ *
+ * https://blog.csdn.net/weixin_41190227/article/details/86600821
+ *
+ *
+ * http://www.guqiankun.com/sortalgorithm/insertion-sort
+ *
+ * 快速排序算法（三种分区方法要熟练！）
+ * https://www.cnblogs.com/Black-treex/p/12722606.html
+ *
  */
 public class 各种排序算法 {
 
     public static void main(String[] args) {
-        Integer[] arr = new Integer[]{1, 3, 2, 5, 4};
+        int[] arr = new int[]{1, 3, 2, 5, 4};
         bubbleSort(Arrays.copyOf(arr, arr.length));
         selectSort(Arrays.copyOf(arr, arr.length));
         insertSort(Arrays.copyOf(arr, arr.length));
+        shellSort(Arrays.copyOf(arr, arr.length));
+        System.out.println(Arrays.toString(mergeSort(Arrays.copyOf(arr, arr.length))));
+
+
     }
 
-    private static void insertSort(Integer[] arr) {
+
+    /**
+     * 归并排序
+     * <p>
+     * 该算法是采用分治法（Divide and Conquer）的一个非常典型的应用
+     *
+     * @param array
+     * @return
+     */
+    public static int[] mergeSort(int[] array) {
+        if (array.length < 2) return array;
+        int mid = array.length / 2;
+        int[] left = Arrays.copyOfRange(array, 0, mid);
+        int[] right = Arrays.copyOfRange(array, mid, array.length);
+        return merge(mergeSort(left), mergeSort(right));
+    }
+
+    /**
+     * 归并排序——将两段排序好的数组结合成一个排序数组
+     *
+     * @param left
+     * @param right
+     * @return
+     */
+    public static int[] merge(int[] left, int[] right) {
+        int[] result = new int[left.length + right.length];
+        for (int index = 0, i = 0, j = 0; index < result.length; index++) {
+            if (i >= left.length)
+                result[index] = right[j++];
+            else if (j >= right.length)
+                result[index] = left[i++];
+            else if (left[i] > right[j])
+                result[index] = right[j++];
+            else
+                result[index] = left[i++];
+        }
+        return result;
+    }
+
+
+    public static void shellSort(int[] arr) {
+        //分组插入
+        int len = arr.length;
+        int temp, gap = len / 2;
+        while (gap > 0) {
+            for (int i = gap; i < len; i++) {
+                temp = arr[i];
+                int preIndex = i - gap;
+                while (preIndex >= 0 && arr[preIndex] > temp) {
+                    arr[preIndex + gap] = arr[preIndex];
+                    preIndex -= gap;
+                }
+                arr[preIndex + gap] = temp;
+            }
+            gap /= 2;
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    private static void insertSort(int[] arr) {
         /**
          *
          * 从第一个元素开始，该元素可以认为已经被排序；
@@ -27,13 +100,20 @@ public class 各种排序算法 {
          * 重复步骤3，直到找到已排序的元素小于或者等于新元素的位置；
          * 将新元素插入到该位置后；
          * 重复步骤2~5。
+         *
+         * 假设前i-1个为已排序的，则插入第i个时，即把i与第i-1,i-2,i-3....比较
+         * 如果i比第i-1个小，i-1后移一位，则此时空出i-1位
+         * 再比较是否比第i-2个小，如果还是比i-2小，那么i-2后移一位，即会放在前面的i-1位上
+         * 如此继续
+         * 如果i-2大些，那么说明此时间空出的位置就是给第i个元素的，那么把第i个元素的值放在此即可
          */
-        int len = arr.length;
-        int preIndex, current;
-        for(int i = 1; i < len; i++) {
-            preIndex = i - 1;
-            current = arr[i];
-            while(preIndex >= 0 && arr[preIndex] > current) {
+        if (arr.length == 0)
+            return;
+        int current;
+        for (int i = 0; i < arr.length - 1; i++) {
+            current = arr[i + 1];
+            int preIndex = i;
+            while (preIndex >= 0 && current < arr[preIndex]) {
                 arr[preIndex + 1] = arr[preIndex];
                 preIndex--;
             }
@@ -42,7 +122,7 @@ public class 各种排序算法 {
         System.out.println(Arrays.toString(arr));
     }
 
-    private static void selectSort(Integer[] arr) {
+    private static void selectSort(int[] arr) {
         /**
          *
          * 初始状态：无序区为R[1..n]，有序区为空；
@@ -72,7 +152,7 @@ public class 各种排序算法 {
     }
 
 
-    private static void bubbleSort(Integer[] arr) {
+    private static void bubbleSort(int[] arr) {
         /**
          *
          * 比较相邻的元素。如果第一个比第二个大，就交换它们两个；
