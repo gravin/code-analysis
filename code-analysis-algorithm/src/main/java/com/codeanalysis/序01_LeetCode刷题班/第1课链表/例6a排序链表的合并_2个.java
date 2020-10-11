@@ -1,4 +1,4 @@
-package com.codeanalysis.algo01_leecode.study01_linkedlist;
+package com.codeanalysis.序01_LeetCode刷题班.第1课链表;
 
 /**
  * @author Gavin
