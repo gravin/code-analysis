@@ -17,12 +17,7 @@ public class 例1a求子集 {
         List<Integer> item = new ArrayList<>();
         List<List<Integer>> result = new ArrayList<>();
         generate(0, nums, item, result);
-        for (int i = 0; i < result.size(); i++) {
-            for (int j = 0; j < result.get(i).size(); j++) {
-                System.out.print(String.format("[%d]", result.get(i).get(j)));
-            }
-            System.out.println();
-        }
+        System.out.println(result);
 
     }
 
