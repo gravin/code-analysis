@@ -6,7 +6,7 @@ import java.util.List;
 public class 例2生成括号 {
     public static void main(String[] args) {
         List<String> result = new ArrayList<>();
-        generateParenthesis("", 2, 0, 0, result);
+        generateParenthesis("", 3, 0, 0, result);
         System.out.println(result);
     }
 
@@ -16,10 +16,10 @@ public class 例2生成括号 {
             return;
         }
         if (left < n) {
-            generateParenthesis(s + "(", left + 1, right, n, result);
+            generateParenthesis(s + "(", n, left + 1, right, result);
         }
         if (left > right) {
-            generateParenthesis(s + ")", left, right + 1, n, result);
+            generateParenthesis(s + ")", n, left, right + 1, result);
         }
     }
 }
