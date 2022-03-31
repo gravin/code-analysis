@@ -10,7 +10,7 @@
 
     <properties>
         <!--<spring_version>3.2.8.RELEASE</spring_version>-->
-        <spring_version>3.2.19.BUILD-SNAPSHOT</spring_version>
+        <spring_version>5.3.18</spring_version>
     </properties>
 
     <dependencies>
